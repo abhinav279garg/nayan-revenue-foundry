@@ -2,11 +2,11 @@
 
 Small, local-first tools for repetitive business-file problems.
 
-## Browse the releases
+## Browse and buy
 
-Try a synthetic before-and-after example, then buy a tested ZIP with one-time Stripe checkout and automatic delivery:
+[Open the full catalog with direct Stripe checkout links](./catalog.md)
 
-https://prevention-girls-vcr-syracuse.trycloudflare.com/store
+Try safe synthetic before-and-after examples in the [live storefront](https://prevention-girls-vcr-syracuse.trycloudflare.com/store), then buy a tested ZIP with one-time Stripe checkout and automatic delivery.
 
 ## Current products
 
@@ -16,4 +16,3 @@ https://prevention-girls-vcr-syracuse.trycloudflare.com/store
 - TidyCSV — conservative cleanup with an audit trail.
 
 All examples are synthetic. Products are delivered only after verified payment; no credentials or customer files are stored in this repository.
-
