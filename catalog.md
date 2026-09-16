@@ -10,6 +10,10 @@ Small, local-first tools for repetitive business-file problems. Each release is 
 - [TidyCSV 0.2.0 — €19](https://buy.stripe.com/dRm9AM0b7gcv2uy4zJe3e00) — clean CSVs conservatively with an audit trail.
 - [SourceReady supplier data normalization pack — €19](https://buy.stripe.com/00wbIU8HDe4n6KOfene3e07) — turn a messy supplier workbook into an approved product master and explicit review queue.
 
+## Start free
+
+[Run the free local CSV checker](https://abhinav279garg.github.io/nayan-revenue-foundry/free-check.html) — find duplicate headers, duplicate rows, blank cells, and uneven columns in your browser. Your file is not uploaded.
+
 ## See synthetic examples
 
 The public storefront includes safe before/after examples that use invented data only:
