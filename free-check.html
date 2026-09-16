@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Free CSV preflight checker — Nayan Revenue Foundry</title>
+  <meta name="description" content="Check a CSV for duplicate headers, duplicate rows, blank fields, and inconsistent columns in your browser. Your file never leaves your device.">
+  <meta property="og:title" content="Free CSV preflight checker">
+  <meta property="og:description" content="Find common CSV problems locally in your browser before an import or reconciliation job.">
+  <meta property="og:type" content="website">
+  <style>:root { color-scheme: light; --ink:#17212b; --muted:#6d7882; --line:#e2e7eb; --paper:#f5f7f8; --card:#fff; --blue:#146ef5; --green:#1b9a68; --amber:#ad6a08; --red:#c53c42; }
+* { box-sizing:border-box; }
+body { margin:0; background:var(--paper); color:var(--ink); font-family:ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+.shell { max-width:1240px; margin:0 auto; padding:36px 24px 48px; }
+.topbar { display:flex; align-items:flex-start; justify-content:space-between; gap:24px; margin-bottom:28px; }
+h1,h2,p { margin:0; } h1 { font-size:clamp(28px,4vw,46px); letter-spacing:-.04em; line-height:1.05; } h2 { font-size:18px; letter-spacing:-.02em; }
+.muted { color:var(--muted); margin-top:8px; font-size:14px; } .eyebrow { color:var(--muted); font-size:10px; font-weight:800; letter-spacing:.14em; margin-bottom:8px; }
+.connection { display:flex; align-items:center; gap:8px; padding:9px 12px; border:1px solid var(--line); border-radius:999px; background:#fff; font-size:12px; white-space:nowrap; }
+.dot { width:8px; height:8px; border-radius:50%; background:var(--green); } .dot.offline { background:#aab3ba; } .dot.live { box-shadow:0 0 0 4px #1b9a6820; }
+.metrics { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:16px; } .metric { padding:18px 20px; background:var(--card); border:1px solid var(--line); border-radius:14px; } .metric span { display:block; color:var(--muted); font-size:12px; } .metric strong { display:block; margin-top:8px; font-size:28px; letter-spacing:-.04em; } .metric.money strong { color:var(--green); }
+.grid { display:grid; grid-template-columns:1.05fr .95fr; gap:16px; } .lower-grid { margin-top:16px; } .panel { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:20px; min-width:0; }
+.today-panel { margin-top:16px; } .quality-panel { margin-top:16px; } .research-list,.quality-list { display:grid; grid-template-columns:repeat(2,1fr); gap:8px; margin-top:16px; } .research-row,.quality-row { display:flex; justify-content:space-between; align-items:center; gap:12px; border:1px solid var(--line); border-radius:10px; padding:11px 13px; } .research-row strong,.quality-row strong { display:inline-block; min-width:66px; color:var(--blue); font-size:12px; text-transform:capitalize; } .research-row span,.quality-row span { font-size:12px; } .research-row small,.quality-row small { display:block; color:var(--muted); margin-top:5px; font-size:10px; } .research-state { color:var(--muted); font-size:10px !important; text-transform:capitalize; white-space:nowrap; } .research-state.handed_off { color:var(--green); font-weight:750; } .research-state.needs_attention { color:var(--red); font-weight:750; }
+.sales-panel { margin-top:16px; } .link-button { text-decoration:none; } .checkout-list,.order-list,.distribution-list { display:grid; gap:8px; } .order-list { margin-top:8px; } .distribution-list { margin-top:16px; } .distribution-heading { color:var(--muted); font-size:10px; font-weight:800; letter-spacing:.14em; margin:6px 0 2px; } .checkout-row,.order-row { display:flex; justify-content:space-between; align-items:center; gap:12px; border:1px solid var(--line); border-radius:10px; padding:11px 13px; } .checkout-row strong,.order-row strong { font-size:12px; text-transform:capitalize; } .checkout-row small,.order-row small { display:block; color:var(--muted); margin-top:5px; font-size:10px; } .checkout-row .research-state,.order-row .research-state { margin-left:auto; }
+.store-shell { max-width:1080px; } .store-hero { display:flex; justify-content:space-between; gap:36px; align-items:flex-end; padding:34px 0 28px; } .store-hero h1 { max-width:650px; font-size:clamp(34px,6vw,64px); line-height:.98; letter-spacing:-.06em; margin:10px 0 18px; } .hero-copy { max-width:650px; font-size:18px; line-height:1.55; color:var(--muted); } .hero-points { display:flex; flex-wrap:wrap; gap:8px; margin-top:22px; } .hero-points span { border:1px solid var(--line); border-radius:999px; padding:7px 10px; font-size:11px; font-weight:750; } .hero-aside { width:220px; display:grid; gap:14px; justify-items:start; } .store-panel { margin-top:4px; } .store-products { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; } .store-card { border:1px solid var(--line); border-radius:14px; padding:19px; min-height:330px; display:flex; flex-direction:column; } .store-card-top { display:flex; justify-content:space-between; align-items:flex-start; gap:8px; } .store-card-top .pill { font-size:9px; } .store-card h2 { margin:18px 0 8px; font-size:22px; } .store-tagline { color:var(--muted); line-height:1.45; min-height:50px; } .store-description { color:var(--ink); font-size:12px; line-height:1.45; margin-top:10px; } .store-card ul { padding-left:18px; margin:14px 0 18px; color:var(--muted); font-size:12px; line-height:1.6; } .store-card li { margin:4px 0; } .store-requirements { border-top:1px solid var(--line); padding-top:10px; margin:0 0 14px; color:var(--muted); font-size:10px; line-height:1.4; } .store-requirements span { display:block; color:var(--ink); font-weight:750; margin-bottom:3px; } .store-buy { margin-top:auto; display:flex; justify-content:space-between; align-items:center; gap:10px; } .store-price { font-weight:800; font-size:18px; display:block; } .store-buy small { display:block; color:var(--muted); font-size:10px; margin-top:3px; } .store-buy .button { white-space:nowrap; text-decoration:none; } .checksum { display:block; color:var(--muted); font-size:9px; margin-top:16px; } .store-note { display:flex; gap:14px; align-items:baseline; border:1px solid var(--line); border-radius:12px; padding:14px 16px; margin-top:14px; color:var(--muted); font-size:12px; line-height:1.5; } .store-note strong { color:var(--ink); white-space:nowrap; }
+.demo-link { color:var(--blue); font-size:11px; font-weight:750; text-decoration:none; margin:0 0 14px; } .demo-link:hover,.back-link:hover { text-decoration:underline; } .back-link { color:var(--blue); font-size:12px; font-weight:750; text-decoration:none; display:inline-block; margin-bottom:16px; } .demo-shell { max-width:1000px; } .demo-panel { padding:28px; } .demo-panel h1 { margin:8px 0 12px; } .demo-lede { color:var(--muted); line-height:1.55; max-width:720px; } .demo-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:24px; } .demo-code { margin:0; min-height:150px; padding:15px; background:#17212b; color:#eaf1ff; border-radius:10px; overflow:auto; font:12px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace; white-space:pre-wrap; } .demo-checks { margin-top:18px; padding:15px 17px; background:#f5f7f8; border-radius:10px; color:var(--muted); font-size:12px; line-height:1.5; } .demo-checks strong { color:var(--ink); } .demo-checks ul { margin:8px 0 0; padding-left:18px; } .demo-cta { margin-top:22px; padding-top:18px; border-top:1px solid var(--line); display:flex; justify-content:space-between; align-items:center; gap:14px; } .demo-cta small { color:var(--muted); font-size:10px; display:block; margin-top:3px; }
+.panel-head { display:flex; align-items:flex-start; justify-content:space-between; gap:14px; margin-bottom:16px; } .recent-head { margin-top:28px; margin-bottom:10px; }
+.button { border:0; border-radius:9px; padding:9px 12px; font-weight:700; font-size:12px; cursor:pointer; } .button.secondary { color:var(--blue); background:#eaf1ff; } .button:disabled { opacity:.5; cursor:wait; }
+.pill { padding:5px 8px; border-radius:999px; background:#f0f3f5; color:var(--muted); font-size:10px; font-weight:700; }
+.stack { display:grid; gap:8px; } .empty { border:1px dashed var(--line); border-radius:10px; padding:20px; color:var(--muted); font-size:13px; text-align:center; }
+.job { border:1px solid var(--line); border-radius:11px; padding:12px 14px; } .job-line { display:flex; justify-content:space-between; gap:12px; align-items:center; } .job-title { font-size:13px; font-weight:750; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; } .job-meta { color:var(--muted); font-size:11px; margin-top:5px; } .status { font-size:10px; text-transform:uppercase; letter-spacing:.07em; font-weight:800; } .status.running { color:var(--blue); } .status.succeeded { color:var(--green); } .status.failed { color:var(--red); } .status.queued { color:var(--amber); }
+.event-list { height:520px; overflow:auto; display:grid; align-content:start; gap:1px; } .event { padding:10px 8px; border-bottom:1px solid #eff1f3; } .event:last-child { border-bottom:0; } .event-top { display:flex; justify-content:space-between; gap:8px; color:var(--muted); font-size:10px; } .event-message { margin-top:4px; font-size:12px; line-height:1.45; word-break:break-word; } .event.error .event-message { color:var(--red); }
+.artifact-list,.revenue-list { display:grid; gap:8px; min-height:80px; } .artifact,.revenue { display:flex; justify-content:space-between; gap:12px; padding:10px 0; border-bottom:1px solid #eff1f3; font-size:12px; } .artifact:last-child,.revenue:last-child { border-bottom:0; } .artifact small,.revenue small { display:block; color:var(--muted); margin-top:4px; } .empty-small { color:var(--muted); font-size:12px; padding:16px 0; }
+.products-panel { margin-top:16px; } .product-list { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; } .product { border:1px solid var(--line); border-radius:11px; padding:14px; } .product-name { font-size:13px; font-weight:750; } .product-meta { color:var(--muted); font-size:11px; margin-top:7px; } .product-link { display:inline-block; margin-top:10px; color:var(--blue); font-size:11px; font-weight:750; text-decoration:none; } .product-link:hover { text-decoration:underline; }
+.readiness-panel { margin-top:16px; } .setup-note { margin:14px 0 0; font-size:12px; } .payment-list { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; } .payment-row { display:flex; align-items:center; justify-content:space-between; gap:12px; border:1px solid var(--line); border-radius:10px; padding:12px 14px; } .payment-row strong { display:block; text-transform:capitalize; font-size:13px; } .payment-row small { display:block; color:var(--muted); margin-top:4px; font-size:11px; } .payment-next { display:block; color:var(--ink); margin-top:7px; font-size:11px; line-height:1.35; } .payment-state { color:var(--muted); font-size:11px; text-transform:capitalize; white-space:nowrap; } .payment-state.ready { color:var(--green); font-weight:750; } .payment-state.test_mode,.payment-state.login_required,.payment-state.authentication_required,.payment-state.activation_required { color:#a56100; font-weight:750; } .pill-good { color:var(--green); background:#eaf8ef; } .pill-warn { color:#a56100; background:#fff4df; }
+.footer { display:flex; justify-content:space-between; gap:16px; color:var(--muted); font-size:11px; padding:18px 2px 0; }
+@media (max-width:800px) { .shell { padding:24px 14px 32px; } .topbar { display:block; } .connection { display:inline-flex; margin-top:16px; } .metrics { grid-template-columns:repeat(2,1fr); } .grid { grid-template-columns:1fr; } .product-list,.payment-list,.research-list,.quality-list,.store-products { grid-template-columns:1fr; } .store-hero { display:block; padding-top:14px; } .hero-aside { width:auto; margin-top:24px; } .store-card { min-height:0; } .store-note { display:block; } .store-note strong { display:block; margin-bottom:5px; } .event-list { height:360px; } .footer { display:block; line-height:1.7; } }
+
+/* Conversion surfaces: a clear free entry point, focused product pages, and
+   responsive proof/CTA blocks. */
+.hero-cta { display:inline-block; margin-top:22px; text-decoration:none; }
+.text-cta { display:inline-block; margin:22px 0 0 12px; color:var(--blue); font-size:12px; font-weight:750; text-decoration:none; }
+.card-actions { display:grid; gap:8px; margin:0 0 14px; }
+.product-page-link { color:var(--blue); font-size:11px; font-weight:750; text-decoration:none; }
+.product-page-link:hover { text-decoration:underline; }
+.workflow-strip { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:14px; }
+.workflow-strip > div { border:1px solid var(--line); border-radius:12px; padding:14px; background:#fbfcfc; }
+.workflow-number { color:var(--blue); font-size:10px; font-weight:850; display:block; margin-bottom:8px; }
+.workflow-strip strong { font-size:13px; }
+.workflow-strip p { color:var(--muted); font-size:11px; margin-top:4px; line-height:1.45; }
+.faq-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:14px; }
+.faq-grid article { padding:15px; border-radius:12px; background:#eef5ff; }
+.faq-grid strong { font-size:12px; }
+.faq-grid p { color:var(--muted); font-size:11px; line-height:1.5; margin-top:7px; }
+.product-shell { max-width:1080px; }
+.product-hero { display:grid; grid-template-columns:1.25fr .75fr; gap:24px; padding:30px; }
+.product-hero h1 { margin:8px 0 14px; }
+.product-promise { color:var(--muted); font-size:18px; line-height:1.5; max-width:680px; }
+.product-actions { display:flex; align-items:center; gap:18px; margin-top:26px; }
+.product-actions .button { text-decoration:none; }
+.product-proof { display:grid; align-content:start; gap:10px; padding:18px; border-radius:12px; background:#f1f6ff; }
+.product-proof strong { font-size:13px; }
+.product-proof p { color:var(--muted); font-size:12px; line-height:1.5; }
+.product-proof .button { text-decoration:none; text-align:center; }
+.product-detail { margin-top:14px; }
+.feature-list { color:var(--muted); font-size:13px; line-height:1.6; padding-left:20px; }
+.feature-list li { margin:8px 0; }
+.checker-shell { max-width:900px; }
+.checker-hero { padding:28px 0 20px; }
+.checker-hero h1 { max-width:760px; margin:10px 0 14px; }
+.checker-panel { margin-top:8px; }
+.file-drop { display:grid; place-items:center; min-height:180px; border:2px dashed #b8c9de; border-radius:14px; background:#f5f8ff; cursor:pointer; text-align:center; }
+.file-drop:hover { border-color:var(--blue); background:#eef5ff; }
+.file-drop-title { font-weight:800; font-size:18px; }
+.file-drop-subtitle { color:var(--muted); font-size:12px; margin-top:5px; }
+.file-drop input { position:absolute; width:1px; height:1px; opacity:0; }
+.checker-status { margin-top:14px; }
+.checker-result { margin-top:18px; }
+.checker-summary { display:flex; justify-content:space-between; gap:12px; padding:16px; border-radius:12px; }
+.checker-summary strong,.checker-summary span { display:block; }
+.checker-summary strong { font-size:14px; }
+.checker-summary span { color:var(--muted); font-size:11px; margin-top:5px; }
+.checker-clear { background:#eaf8ef; border:1px solid #cbe7d5; }
+.checker-attention { background:#fff4df; border:1px solid #f1d79c; }
+.checker-badge { color:var(--ink) !important; font-weight:800; white-space:nowrap; }
+.finding-list { color:var(--ink); font-size:13px; line-height:1.6; padding-left:20px; }
+.checker-ok { color:var(--green); font-size:13px; margin-top:14px; }
+.checker-disclaimer { color:var(--muted); font-size:11px; line-height:1.5; margin-top:14px; }
+.checker-upgrade { margin-top:14px; }
+.checker-links { display:flex; flex-wrap:wrap; gap:8px; margin-top:16px; }
+.checker-links .button { text-decoration:none; }
+@media (max-width:800px) {
+  .workflow-strip,.faq-grid { grid-template-columns:1fr; }
+  .text-cta { margin-left:0; display:block; }
+  .product-hero { grid-template-columns:1fr; padding:22px; }
+  .product-actions { align-items:flex-start; flex-direction:column; }
+}
+</style>
+</head>
+<body>
+  <main class="shell checker-shell">
+    <a class="back-link" href="./">← All releases</a>
+    <section class="checker-hero">
+      <p class="eyebrow">FREE · LOCAL-ONLY · NO UPLOAD</p>
+      <h1>Find the CSV problems before they cost you a re-run.</h1>
+      <p class="hero-copy">Choose a CSV and get an instant preflight report in this browser. The file is read locally and discarded when you close the page.</p>
+    </section>
+    <section class="panel checker-panel">
+      <label class="file-drop" for="csv-file">
+        <span class="file-drop-title">Choose a CSV file</span>
+        <span class="file-drop-subtitle">Up to 2 MB · nothing is uploaded</span>
+        <input id="csv-file" type="file" accept=".csv,text/csv">
+      </label>
+      <div id="checker-status" class="checker-status muted">Waiting for a file.</div>
+      <div id="checker-result" class="checker-result" hidden></div>
+    </section>
+    <section class="panel checker-upgrade">
+      <p class="eyebrow">WHEN THE FREE CHECK ISN’T ENOUGH</p>
+      <h2>Use a workflow-specific release</h2>
+      <p class="muted">The free checker spots general CSV issues. The paid releases add narrow rules, repair/report packages, examples, and a tested ZIP for a defined workflow.</p>
+      <div class="checker-links">
+        <a class="button" href="https://buy.stripe.com/5kQ8wI1fbd0j6KOfene3e06">CRM imports</a>
+        <a class="button secondary" href="https://buy.stripe.com/00w9AM5vrf8rb148PZe3e01">Shopify catalogs</a>
+        <a class="button secondary" href="https://buy.stripe.com/5kQaEQ5vr2lF3yC3vFe3e02">Invoice matching</a>
+        <a class="button secondary" href="./">Browse all releases</a>
+      </div>
+    </section>
+    <footer class="footer"><span>Your data stays in this tab. Examples are synthetic.</span><span>Receive-only checkout · no recurring charge</span></footer>
+  </main>
+  <script>const fileInput = document.getElementById('csv-file');
+const statusEl = document.getElementById('checker-status');
+const resultEl = document.getElementById('checker-result');
+
+const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+
+function parseCsv(text) {
+  const rows = [];
+  let row = [], cell = '', quoted = false;
+  for (let i = 0; i < text.length; i += 1) {
+    const char = text[i];
+    const next = text[i + 1];
+    if (char === '"' && quoted && next === '"') { cell += '"'; i += 1; continue; }
+    if (char === '"') { quoted = !quoted; continue; }
+    if (char === ',' && !quoted) { row.push(cell); cell = ''; continue; }
+    if ((char === '\n' || char === '\r') && !quoted) {
+      if (char === '\r' && next === '\n') i += 1;
+      row.push(cell); cell = '';
+      if (row.some(value => value.trim() !== '')) rows.push(row);
+      row = [];
+      continue;
+    }
+    cell += char;
+  }
+  if (cell || row.length) { row.push(cell); if (row.some(value => value.trim() !== '')) rows.push(row); }
+  if (quoted) throw new Error('The file ends inside a quoted field.');
+  return rows;
+}
+
+function analyse(text) {
+  const rows = parseCsv(text.replace(/^\uFEFF/, ''));
+  if (!rows.length) throw new Error('The CSV has no non-empty rows.');
+  const headers = rows[0].map(value => value.trim());
+  const findings = [];
+  const seenHeaders = new Map();
+  headers.forEach((header, index) => {
+    const key = header.toLowerCase();
+    if (!header) findings.push(`Blank header at column ${index + 1}`);
+    if (seenHeaders.has(key)) findings.push(`Duplicate header “${header || `column ${index + 1}`}”`);
+    seenHeaders.set(key, index);
+  });
+  const width = headers.length;
+  const duplicateRows = new Set();
+  const rowKeys = new Map();
+  let blankCells = 0, unevenRows = 0;
+  rows.slice(1).forEach((row, rowIndex) => {
+    if (row.length !== width) unevenRows += 1;
+    blankCells += row.filter(value => value.trim() === '').length;
+    const key = row.join('\u001f');
+    if (rowKeys.has(key)) { duplicateRows.add(rowIndex + 2); duplicateRows.add(rowKeys.get(key)); }
+    else rowKeys.set(key, rowIndex + 2);
+  });
+  if (unevenRows) findings.push(`${unevenRows} data row${unevenRows === 1 ? '' : 's'} have a different number of columns`);
+  if (duplicateRows.size) findings.push(`${duplicateRows.size} duplicate data row${duplicateRows.size === 1 ? '' : 's'} found`);
+  if (blankCells) findings.push(`${blankCells} blank cell${blankCells === 1 ? '' : 's'} found`);
+  const severity = findings.length ? 'attention' : 'clear';
+  return {rows: Math.max(0, rows.length - 1), columns: width, findings, severity};
+}
+
+function render(result, fileName) {
+  const clear = result.severity === 'clear';
+  resultEl.hidden = false;
+  resultEl.innerHTML = `<div class="checker-summary ${clear ? 'checker-clear' : 'checker-attention'}"><div><strong>${clear ? 'Looks clean at a general level' : 'Review recommended'}</strong><span>${escapeHtml(fileName)} · ${result.rows} data rows · ${result.columns} columns</span></div><span class="checker-badge">${result.findings.length} finding${result.findings.length === 1 ? '' : 's'}</span></div>${result.findings.length ? `<ul class="finding-list">${result.findings.map(item => `<li>${escapeHtml(item)}</li>`).join('')}</ul>` : '<p class="checker-ok">No general structural issues detected. A workflow-specific importer may still have its own rules.</p>'}<p class="checker-disclaimer">This is a local general check, not a guarantee that Shopify, HubSpot, a bank, or another destination will accept the file.</p>`;
+}
+
+fileInput.addEventListener('change', async () => {
+  const file = fileInput.files?.[0];
+  if (!file) return;
+  if (file.size > 2 * 1024 * 1024) { statusEl.textContent = 'This free checker accepts files up to 2 MB.'; resultEl.hidden = true; return; }
+  statusEl.textContent = 'Checking locally…';
+  try {
+    const result = analyse(await file.text());
+    render(result, file.name);
+    statusEl.textContent = 'Finished locally. Your file was not uploaded.';
+  } catch (error) {
+    resultEl.hidden = true;
+    statusEl.textContent = error.message || 'Could not read this CSV.';
+  }
+});
+</script>
+</body>
+</html>
