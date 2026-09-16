@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://abhinav279garg.github.io/nayan-revenue-foundry/sitemap.xml
